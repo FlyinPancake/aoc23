@@ -14,8 +14,6 @@ aoc-cli *args:
     set -x ADVENT_OF_CODE_SESSION "op://Personal/cqib5epgrz55ypzgh36nw5apne/credential"
     op run -- aoc {{args}} 
 
-init-day:
-    
 
 pl:
     just aoc-cli private-leaderboard {{leaderboard_id}}
