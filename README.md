@@ -11,9 +11,9 @@ To test the solution, run `just test <day>`.
 
 ## TODO
 
-[x] Create a new day
-[x] Download the input
-[x] Create a test
-[x] Run the test
-[x] Run the solution
-[ ] Submit the solution
+- [x] Create a new day
+- [x] Download the input
+- [x] Create a test
+- [x] Run the test
+- [x] Run the solution
+- [ ] Submit the solution
