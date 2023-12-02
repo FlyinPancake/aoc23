@@ -18,3 +18,12 @@ aoc-cli *args:
 pl:
     just aoc-cli private-leaderboard {{leaderboard_id}}
 
+
+new_day day:
+    #!/bin/bash
+    export ADVENT_OF_CODE_SESSION="op://Personal/cqib5epgrz55ypzgh36nw5apne/credential"
+    export RUST_BACKTRACE=1
+    op run -- cargo run --release -p common --bin create_day -- --day {{day}}
+
+test day:
+    cargo test -p day_{{day}}

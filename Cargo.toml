@@ -1,10 +1,22 @@
 [workspace]
-members = ["day_1", "common"]
+members = [
+    "day_1_bk",
+    "common",
+    "day_template",
+    "day_1",
+]
 resolver = "2"
 
 [workspace.dependencies]
-
-clap = { version = "4.4.10", features = ["derive"] }
-common = { path = "common" }
-rayon = { version = "1.5.1", features = [] }
 color-eyre = "0.6.2"
+
+[workspace.dependencies.clap]
+features = ["derive"]
+version = "4.4.10"
+
+[workspace.dependencies.common]
+path = "common"
+
+[workspace.dependencies.rayon]
+features = []
+version = "1.5.1"
