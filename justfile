@@ -23,7 +23,13 @@ new_day day:
     #!/bin/bash
     export ADVENT_OF_CODE_SESSION="op://Personal/cqib5epgrz55ypzgh36nw5apne/credential"
     export RUST_BACKTRACE=1
-    op run -- cargo run --release -p common --bin create_day -- --day {{day}}
+    op run -- cargo run -p common --bin create_day -- --day {{day}} init
+
+update_day day:
+    #!/bin/bash
+    export ADVENT_OF_CODE_SESSION="op://Personal/cqib5epgrz55ypzgh36nw5apne/credential"
+    export RUST_BACKTRACE=1
+    op run -- cargo run -p common --bin create_day -- --day {{day}} update-puzzle
 
 test day:
     cargo test -p day_{{day}}
