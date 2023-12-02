@@ -12,10 +12,14 @@ edition = "2021"
 name = "day_2"
 version = "0.1.0"
 
-[[bin]]
-name = "day_2_task_1"
-path = "src/task_one.rs"
+[lib]
+name = "solution"
+path = "src/lib.rs"
 
 [[bin]]
-name = "day_2_task_2"
-path = "src/task_two.rs"
+name = "task_1"
+path = "src/bin/task_1.rs"
+
+[[bin]]
+name = "task_2"
+path = "src/bin/task_2.rs"

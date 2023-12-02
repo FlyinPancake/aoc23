@@ -1,9 +1,6 @@
 use std::str::FromStr;
 
-use color_eyre::{
-    eyre::{anyhow, ContextCompat},
-    Result,
-};
+use color_eyre::{eyre::anyhow, Result};
 #[derive(Debug)]
 pub enum GameCube {
     Red,
@@ -186,7 +183,7 @@ mod test {
     fn test_case_two_solve() -> Result<()> {
         assert_eq!(
             solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            0
+            69629
         );
         Ok(())
     }

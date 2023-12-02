@@ -1,15 +1,11 @@
 use color_eyre::Result;
 
-fn solve_task_one(input: Vec<String>) -> Result<i32> {
+pub fn solve_task_one(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
     todo!()
 }
 
-fn solve_task_two(input: Vec<String>) -> Result<i32> {
+pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
     todo!()
-}
-
-fn main() {
-    unreachable!();
 }
 
 #[cfg(test)]
