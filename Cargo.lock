@@ -368,6 +368,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "day_3"
+version = "0.1.0"
+dependencies = [
+ "color-eyre",
+ "common",
+ "rayon",
+]
+
+[[package]]
 name = "day_template"
 version = "0.1.0"
 dependencies = [
