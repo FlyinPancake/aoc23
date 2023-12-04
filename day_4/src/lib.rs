@@ -1,12 +1,12 @@
-use std::{collections::HashMap, str::FromStr, time::Instant};
+use std::{collections::HashSet, str::FromStr, time::Instant};
 
 use color_eyre::{eyre::anyhow, Result};
 
 #[derive(Debug)]
 struct ScratchCard {
     id: i32,
-    winning_numbers: Vec<i32>,
-    own_numbers: Vec<i32>,
+    winning_numbers: HashSet<i32>,
+    own_numbers: HashSet<i32>,
 }
 
 impl FromStr for ScratchCard {
@@ -14,28 +14,23 @@ impl FromStr for ScratchCard {
 
     fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
         let mut parts = s.split(":");
-        let id: i32 = parts
-            .next()
-            .ok_or(anyhow!("No content in string"))?
-            .replace("Card ", "")
-            .trim()
-            .parse()?;
+        let id: i32 = parts.next().unwrap()[5..].trim().parse()?;
 
-        let mut parts = parts.next().ok_or(anyhow!("No numbers part"))?.split("|");
-        let winning_numbers: Vec<i32> = parts
+        let mut parts = parts.next().unwrap().split("|");
+        let winning_numbers = parts
             .next()
             .ok_or(anyhow!("No winning numbers found"))?
             .split_ascii_whitespace()
             .map(str::trim)
             .map(i32::from_str)
-            .collect::<Result<Vec<i32>, _>>()?;
+            .collect::<Result<HashSet<i32>, _>>()?;
         let own_numbers = parts
             .next()
             .ok_or(anyhow!("No own numbers"))?
             .split_ascii_whitespace()
             .map(str::trim)
             .map(i32::from_str)
-            .collect::<Result<Vec<_>, _>>()?;
+            .collect::<Result<HashSet<_>, _>>()?;
         Ok(Self {
             id,
             winning_numbers,
@@ -56,54 +51,47 @@ impl ScratchCard {
     }
 
     fn matches(&self) -> u32 {
-        self.winning_numbers
-            .iter()
-            .filter(|n| self.own_numbers.contains(n))
-            .count() as u32
+        self.winning_numbers.intersection(&self.own_numbers).count() as u32
     }
 }
 
 pub fn solve_task_one(input: Vec<String>) -> Result<i32> {
+    let start_time = Instant::now();
     let sol = input
         .iter()
         .filter_map(|line| match line.parse::<ScratchCard>() {
-            Ok(c) => Some(c),
+            Ok(c) => match c.get_points() {
+                Ok(n) => Some(n),
+                Err(_) => None,
+            },
             Err(_) => {
                 panic!("Failed on line {}", line);
             }
         })
-        .filter_map(|sc| match sc.get_points() {
-            Ok(n) => Some(n),
-            Err(_) => None,
-        })
         .sum();
+    eprintln!("⏱️ Took: {:?}", Instant::now() - start_time);
     Ok(sol)
 }
 
-pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
+pub fn solve_task_two(input: Vec<String>) -> Result<i32> {
     let start_time = Instant::now();
-    let cards: HashMap<i32, ScratchCard> = input
-        .iter()
-        .filter_map(|line| match line.parse::<ScratchCard>() {
-            Ok(c) => Some((c.id, c)),
-            Err(_) => {
-                panic!("Failed on line {}", line);
-            }
-        })
-        .collect();
+    // HashMap<CardId, (matches)>
+    let cards = input.iter().map(|s| {
+        let c = s.parse::<ScratchCard>().unwrap();
+        c.matches()
+    });
 
-    let solutions: HashMap<i32, u32> = cards.iter().map(|(i, sc)| (*i, sc.matches())).collect();
+    let mut card_multiples: Vec<i32> = vec![1; cards.len()];
 
-    let mut own_cards: Vec<&ScratchCard> = cards.values().collect();
-    let mut total_cards = 0;
-    while let Some(card) = own_cards.pop() {
-        total_cards += 1;
-        for i in 1..((solutions[&card.id] as i32) + 1) {
-            own_cards.push(&cards[&(card.id + i)]);
+    for (card_id, points) in cards.enumerate() {
+        for other_card_id in (card_id + 1)..(card_id + points as usize + 1) {
+            let card_multiplier = card_multiples[card_id];
+            let other_card_multiplier = card_multiples[other_card_id];
+            card_multiples[other_card_id] = card_multiplier + other_card_multiplier;
         }
     }
     eprintln!("⏱️ Took: {:?}", Instant::now() - start_time);
-    Ok(total_cards)
+    Ok(card_multiples.iter().sum())
 }
 
 #[cfg(test)]

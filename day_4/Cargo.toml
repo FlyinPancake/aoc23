@@ -23,3 +23,6 @@ path = "src/lib.rs"
 edition = "2021"
 name = "day_4"
 version = "0.1.0"
+
+[profile.release]
+opt-level = 2
