@@ -1,4 +1,4 @@
-use std::slice::Iter;
+use std::{slice::Iter, time::Instant};
 
 use color_eyre::{
     eyre::{anyhow, Error},
@@ -166,6 +166,7 @@ impl SchematicParser {
 }
 
 pub fn solve_task_one(input: Vec<String>) -> Result<i32> {
+    let start_time = Instant::now();
     let schematic = input
         .into_iter()
         .map(|l| l.chars().into_iter().collect::<Vec<char>>())
@@ -205,10 +206,15 @@ pub fn solve_task_one(input: Vec<String>) -> Result<i32> {
         .map(|(n, _)| n)
         .sum();
 
+    let end_time = Instant::now();
+
+    println!("Took {:#?}", end_time - start_time);
     Ok(sum)
 }
 
 pub fn solve_task_two(input: Vec<String>) -> Result<i32> {
+    let start_time = Instant::now();
+
     let schematic = input
         .into_iter()
         .map(|l| l.chars().into_iter().collect::<Vec<char>>())
@@ -263,7 +269,9 @@ pub fn solve_task_two(input: Vec<String>) -> Result<i32> {
         .collect();
 
     let sol: i32 = ratios.iter().map(|(a, b)| a * b).sum();
+    let end_time = Instant::now();
 
+    println!("Took {:#?}", end_time - start_time);
     Ok(sol)
 }
 

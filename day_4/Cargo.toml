@@ -1,0 +1,25 @@
+[[bin]]
+name = "task_1"
+path = "src/bin/task_1.rs"
+
+[[bin]]
+name = "task_2"
+path = "src/bin/task_2.rs"
+
+[dependencies.color-eyre]
+workspace = true
+
+[dependencies.common]
+workspace = true
+
+[dependencies.rayon]
+workspace = true
+
+[lib]
+name = "solution"
+path = "src/lib.rs"
+
+[package]
+edition = "2021"
+name = "day_4"
+version = "0.1.0"
