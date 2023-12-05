@@ -29,5 +29,5 @@ test day phase="":
 
 submit day phase:
     #!/bin/bash
-    ADVENT_OF_CODE_SOLUTION=$(cargo run --package day_{{day}} --bin task_{{phase}})
+    ADVENT_OF_CODE_SOLUTION=$(cargo run --package day_{{day}} --bin task_{{phase}} --release)
     just aoc-cli submit -d {{day}} {{phase}} "$ADVENT_OF_CODE_SOLUTION"

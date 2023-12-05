@@ -29,16 +29,17 @@ mod test {
 
     #[test]
     fn test_case_one_example() -> Result<()> {
-        assert_eq!(
-            solve_task_one(get_file(PathBuf::from("inputs/example_1.txt"))?)?,
-            0
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_1.txt"))?;
+        assert_eq!(solve_task_one(file)?, 0);
         Ok(())
     }
     #[test]
     fn test_case_one_solve() -> Result<()> {
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+
         assert_eq!(
-            solve_task_one(get_file(PathBuf::from("inputs/full.txt"))?)?,
+            solve_task_one(get_file(cargo_manifest_dir.join("inputs/full.txt"))?)?,
             0
         );
         Ok(())
