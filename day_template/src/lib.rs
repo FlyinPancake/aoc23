@@ -1,10 +1,16 @@
+use std::time::Instant;
+
 use color_eyre::Result;
 
 pub fn solve_task_one(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
+    let start_time = Instant::now();
+    eprintln!("{:?}", Instant::now() - start_time);
     todo!()
 }
 
 pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
+    let start_time = Instant::now();
+    eprintln!("{:?}", Instant::now() - start_time);
     todo!()
 }
 
