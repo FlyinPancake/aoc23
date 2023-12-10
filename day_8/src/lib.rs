@@ -96,19 +96,17 @@ pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i
         .map(|el| {
             let mut parts = el.split("=");
             let pars: &[_] = &['(', ')'];
-            (
-                parts.next().unwrap().trim().to_string(),
-                parts
-                    .next()
-                    .unwrap()
-                    .trim()
-                    .trim_matches(pars)
-                    .split(',')
-                    .map(|part| part.trim().to_string())
-                    .collect::<Vec<_>>(),
-            )
+            let trim = parts.next().unwrap().trim().to_owned();
+            let mut map = parts
+                .next()
+                .unwrap()
+                .trim()
+                .trim_matches(pars)
+                .split(',')
+                .map(|part| part.trim().to_owned());
+            (trim, map.next().unwrap(), map.next().unwrap())
         })
-        .map(|(v, lrs)| (v, (lrs[0].clone(), lrs[1].clone())))
+        .map(|(v, l, r)| (v, (l, r)))
         .collect::<Vec<_>>();
 
     let mut nodes: HashMap<String, Node> = HashMap::new();
@@ -148,7 +146,8 @@ pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i
         };
 
         let (end_idx, end_node) = end_node;
-        let mut circle_nodes = vec![end_node];
+        let mut circle_len = 1;
+
         let mut n = end_node;
         let mut ldirs = dirs.iter().skip(end_idx);
         let circle_nodes = loop {
@@ -159,16 +158,16 @@ pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i
                     _ => panic!(),
                 }
                 if end_node == n {
-                    break circle_nodes;
+                    break circle_len;
                 } else {
-                    circle_nodes.push(n);
+                    circle_len += 1;
                 }
             } else {
                 ldirs = dirs.iter().skip(0);
             }
         };
 
-        circle_nodes.len() as i64
+        circle_nodes
     });
 
     eprintln!("{:?}", circle_lens);
@@ -234,7 +233,7 @@ mod test {
     fn test_case_two_solve() -> Result<()> {
         assert_eq!(
             solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            0
+            9064949303801
         );
         Ok(())
     }
