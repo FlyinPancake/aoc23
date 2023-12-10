@@ -2,7 +2,7 @@ use std::time::Instant;
 
 use color_eyre::Result;
 
-fn get_first_value(nums: Vec<i32>) -> i32 {
+fn get_historic_value(nums: Vec<i32>) -> i32 {
     let mut differences = vec![nums];
     let mut current: &Vec<i32> = differences.last_mut().unwrap();
     loop {
@@ -22,11 +22,13 @@ fn get_first_value(nums: Vec<i32>) -> i32 {
     next_differences.last_mut().unwrap().insert(0, 0);
     let mut prev = next_differences.pop().unwrap();
     prev.reverse();
+
     while let Some(mut cur) = next_differences.pop() {
         cur.reverse();
         let cur_last = *cur.last().unwrap();
         let prev_last = prev.last_mut().unwrap();
-        cur.push(*prev_last + cur_last);
+        cur.push(cur_last - *prev_last);
+
         prev = cur;
     }
     *prev.last().unwrap()
@@ -90,7 +92,7 @@ pub fn solve_task_two(input: Vec<String>) -> Result<i32> {
     // eprintln!("{:?}", sensor_value_histories);
     let sol = sensor_value_histories
         .into_iter()
-        .map(get_first_value)
+        .map(get_historic_value)
         .sum();
     eprintln!("{:?}", Instant::now() - start_time);
     Ok(sol)
@@ -137,7 +139,7 @@ mod test {
     fn test_case_two_example() -> Result<()> {
         assert_eq!(
             solve_task_two(get_file(PathBuf::from("inputs/example_1.txt"))?)?,
-            0
+            2
         );
         Ok(())
     }
