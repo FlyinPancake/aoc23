@@ -18,7 +18,7 @@ impl<'a> Node {
     }
 }
 
-pub fn solve_task_one(input: Vec<String>) -> Result<i32> {
+pub fn solve_task_one(input: Vec<String>) -> Result<i64> {
     let start_time = Instant::now();
     let mut o_input = input.iter();
     let dirs = o_input.next().unwrap().clone();
@@ -66,10 +66,26 @@ pub fn solve_task_one(input: Vec<String>) -> Result<i32> {
     }
 
     eprintln!("{:?}", Instant::now() - start_time);
-    Ok(reps * dirs.len() as i32)
+    Ok(reps * dirs.len() as i64)
 }
 
-pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
+fn gcd(a: i64, b: i64) -> i64 {
+    if b == 0 {
+        a.abs()
+    } else {
+        gcd(b, a % b)
+    }
+}
+
+fn lcm(a: i64, b: i64) -> i64 {
+    if a == 0 || b == 0 {
+        0
+    } else {
+        (a.abs() / gcd(a, b)) * b.abs()
+    }
+}
+
+pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i64> {
     let start_time = Instant::now();
     let mut o_input = input.iter();
     let dirs = o_input.next().unwrap().clone();
@@ -100,37 +116,65 @@ pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i
         nodes.insert(v.clone(), Node::new(v, l, r));
     }
 
-    let mut start_nodes: Vec<_> = nodes
+    let start_nodes: Vec<_> = nodes
         .iter()
         .filter(|n| n.0.ends_with('A'))
         .map(|n| n.1.clone())
         .collect();
 
-    let mut reps = 0;
+    let dirs: Vec<char> = dirs.chars().collect();
 
-    loop {
-        reps += 1;
-        start_nodes =
-            dirs.chars()
-                .collect::<Vec<_>>()
-                .iter()
-                .fold(start_nodes, |inner_nodes, c| {
-                    let res = inner_nodes.into_par_iter().map(|n| match c {
-                        'L' => nodes[&n.left].clone(),
-                        'R' => nodes[&n.right].clone(),
-                        _ => panic!(),
-                    });
-                    let res = res.collect();
+    let circle_lens = start_nodes.iter().map(|n| {
+        let mut n = n;
+        let mut end_node = None;
+        let end_node = loop {
+            let mut dirs = dirs.iter().enumerate();
 
-                    res
-                });
+            while let Some((idx, dir)) = dirs.next() {
+                if n.value.ends_with("Z") {
+                    end_node = Some((idx, n));
+                    break;
+                }
+                match dir {
+                    'L' => n = &nodes[&n.left],
+                    'R' => n = &nodes[&n.right],
+                    _ => panic!("wrong char in dirs {dir}"),
+                }
+            }
 
-        if start_nodes.iter().all(|n| n.value.ends_with('Z')) {
-            break;
-        }
-    }
-    eprintln!("{:?}", Instant::now() - start_time);
-    Ok(reps * dirs.len() as i32)
+            if let Some(end_node) = end_node {
+                break end_node;
+            }
+        };
+
+        let (end_idx, end_node) = end_node;
+        let mut circle_nodes = vec![end_node];
+        let mut n = end_node;
+        let mut ldirs = dirs.iter().skip(end_idx);
+        let circle_nodes = loop {
+            if let Some(dir) = ldirs.next() {
+                match dir {
+                    'L' => n = &nodes[&n.left],
+                    'R' => n = &nodes[&n.right],
+                    _ => panic!(),
+                }
+                if end_node == n {
+                    break circle_nodes;
+                } else {
+                    circle_nodes.push(n);
+                }
+            } else {
+                ldirs = dirs.iter().skip(0);
+            }
+        };
+
+        circle_nodes.len() as i64
+    });
+
+    eprintln!("{:?}", circle_lens);
+    let lcm = circle_lens.into_iter().fold(1, lcm);
+    eprintln!("Took {:?}", Instant::now() - start_time);
+    Ok(lcm)
 }
 
 #[cfg(test)]
