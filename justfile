@@ -24,6 +24,13 @@ update_day day:
     export RUST_BACKTRACE=1
     op run -- cargo run -p common --bin create_day -- --day {{day}} update-puzzle
 
+vscode_setup day:
+    #!/bin/bash
+    export ADVENT_OF_CODE_SESSION="op://Personal/cqib5epgrz55ypzgh36nw5apne/credential"
+    export RUST_BACKTRACE=1
+    op run -- cargo run -p common --bin create_day -- --day {{day}} vscode
+
+
 test day phase="":
     cargo test -p day_{{day}} {{phase}} --lib
 

@@ -1,492 +1,223 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
     "configurations": [
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'common'",
+            "args": [],
             "cargo": {
                 "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
+                    "build",
+                    "--bin=create_day",
                     "--package=common"
                 ],
                 "filter": {
-                    "name": "common",
-                    "kind": "lib"
+                    "kind": "bin",
+                    "name": "create_day"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
+            "cwd": "${workspaceFolder}",
             "name": "Debug executable 'create_day'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=create_day",
-                    "--package=common"
-                ],
-                "filter": {
-                    "name": "create_day",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'create_day'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=create_day",
-                    "--package=common"
+                    "--package",
+                    "day_1",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "create_day",
-                    "kind": "bin"
+                    "kind": "lib",
+                    "name": "day_1"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_1",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'solution'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--lib",
-                    "--package=day_template"
+                    "--package",
+                    "day_2",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "solution",
-                    "kind": "lib"
+                    "kind": "lib",
+                    "name": "day_2"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_2",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'task_1'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=task_1",
-                    "--package=day_template"
-                ],
-                "filter": {
-                    "name": "task_1",
-                    "kind": "bin"
-                }
-            },
             "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'task_1'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=task_1",
-                    "--package=day_template"
+                    "--package",
+                    "day_3",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "task_1",
-                    "kind": "bin"
+                    "kind": "lib",
+                    "name": "day_3"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_3",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'task_2'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=task_2",
-                    "--package=day_template"
-                ],
-                "filter": {
-                    "name": "task_2",
-                    "kind": "bin"
-                }
-            },
             "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'task_2'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=task_2",
-                    "--package=day_template"
+                    "--package",
+                    "day_4",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "task_2",
-                    "kind": "bin"
+                    "kind": "lib",
+                    "name": "day_4"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_4",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'day_1'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=day_1",
-                    "--package=day_1"
-                ],
-                "filter": {
-                    "name": "day_1",
-                    "kind": "bin"
-                }
-            },
             "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'day_1'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=day_1",
-                    "--package=day_1"
+                    "--package",
+                    "day_5",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "day_1",
-                    "kind": "bin"
+                    "kind": "lib",
+                    "name": "day_5"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_5",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'day_2/solution'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--lib",
-                    "--package=day_2"
+                    "--package",
+                    "day_6",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "solution",
-                    "kind": "lib"
+                    "kind": "lib",
+                    "name": "day_6"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_6",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'day_2/task_1'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=task_1",
-                    "--package=day_2"
-                ],
-                "filter": {
-                    "name": "task_1",
-                    "kind": "bin"
-                }
-            },
             "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'day_2/task_1'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=task_1",
-                    "--package=day_2"
+                    "--package",
+                    "day_7",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "task_1",
-                    "kind": "bin"
+                    "kind": "lib",
+                    "name": "day_7"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_7",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'day_2/task_2'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=task_2",
-                    "--package=day_2"
-                ],
-                "filter": {
-                    "name": "task_2",
-                    "kind": "bin"
-                }
-            },
             "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'day_2/task_2'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=task_2",
-                    "--package=day_2"
+                    "--package",
+                    "day_8",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "task_2",
-                    "kind": "bin"
+                    "kind": "lib",
+                    "name": "day_8"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_8",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'day_3/solution'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--lib",
-                    "--package=day_3"
+                    "--package",
+                    "day_9",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "solution",
-                    "kind": "lib"
+                    "kind": "lib",
+                    "name": "day_9"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_9",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'day_3/task_1'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=task_1",
-                    "--package=day_3"
-                ],
-                "filter": {
-                    "name": "task_1",
-                    "kind": "bin"
-                }
-            },
             "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'day_3/task_1'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=task_1",
-                    "--package=day_3"
+                    "--package",
+                    "day_10",
+                    "--lib"
                 ],
                 "filter": {
-                    "name": "task_1",
-                    "kind": "bin"
+                    "kind": "lib",
+                    "name": "day_10"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
+            "cwd": "${workspaceFolder}",
+            "name": "Debug unit tests in day_10",
             "request": "launch",
-            "name": "Debug executable 'day_3/task_2'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=task_2",
-                    "--package=day_3"
-                ],
-                "filter": {
-                    "name": "task_2",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'day_3/task_2'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=task_2",
-                    "--package=day_3"
-                ],
-                "filter": {
-                    "name": "task_2",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'day_4/solution'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=day_4"
-                ],
-                "filter": {
-                    "name": "solution",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'day_4/task_1'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=task_1",
-                    "--package=day_4"
-                ],
-                "filter": {
-                    "name": "task_1",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'day_4/task_1'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=task_1",
-                    "--package=day_4"
-                ],
-                "filter": {
-                    "name": "task_1",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'day_4/task_2'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=task_2",
-                    "--package=day_4"
-                ],
-                "filter": {
-                    "name": "task_2",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'day_4/task_2'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=task_2",
-                    "--package=day_4"
-                ],
-                "filter": {
-                    "name": "task_2",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'day_5/solution'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=day_5"
-                ],
-                "filter": {
-                    "name": "solution",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-    ]
+            "type": "lldb"
+        }
+    ],
+    "version": "0.2.0"
 }
