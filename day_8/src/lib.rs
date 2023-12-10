@@ -170,7 +170,6 @@ pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i
         circle_nodes
     });
 
-    eprintln!("{:?}", circle_lens);
     let lcm = circle_lens.into_iter().fold(1, lcm);
     eprintln!("Took {:?}", Instant::now() - start_time);
     Ok(lcm)
