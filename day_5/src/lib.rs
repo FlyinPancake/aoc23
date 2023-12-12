@@ -206,6 +206,7 @@ pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i
             .collect::<Vec<_>>(),
     );
     eprintln!("{:#?}", soils);
+    panic!();
 
     let soil_to_fertilizer = ConversionTable::from_string_vec(conversions[2][1..].into());
     let fertilizers: Vec<_> = soils

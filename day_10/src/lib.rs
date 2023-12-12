@@ -1,10 +1,10 @@
-use std::time::Instant;
+use std::{collections::HashSet, time::Instant};
 
 use color_eyre::{
     eyre::{anyhow, Report},
     Result,
 };
-#[derive(Debug)]
+#[derive(Debug, Hash, PartialEq, Eq)]
 enum Pipe {
     NorthSouth,
     WestEast,
@@ -41,6 +41,17 @@ impl Pipe {
             Pipe::SouthEast => vec![Direction::South, Direction::East],
         }
     }
+
+    fn pipes() -> [Pipe; 6] {
+        [
+            Pipe::NorthSouth,
+            Pipe::WestEast,
+            Pipe::NorthWest,
+            Pipe::NorthEast,
+            Pipe::SouthWest,
+            Pipe::SouthEast,
+        ]
+    }
 }
 
 #[derive(Debug, PartialEq, PartialOrd)]
@@ -62,7 +73,7 @@ impl Direction {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 enum Tile {
     Ground,
     Pipe(Pipe),
@@ -131,6 +142,27 @@ impl Map {
         self.tiles.get(y).and_then(|row| row.get(x))
     }
 
+    fn get_adjacent_tile(&self, (x, y): (usize, usize), direction: &Direction) -> Option<&Tile> {
+        match direction {
+            Direction::North => {
+                if y == 0 {
+                    None
+                } else {
+                    self.get_tile(x, y - 1)
+                }
+            }
+            Direction::South => self.get_tile(x, y + 1),
+            Direction::West => {
+                if x == 0 {
+                    None
+                } else {
+                    self.get_tile(x - 1, y)
+                }
+            }
+            Direction::East => self.get_tile(x + 1, y),
+        }
+    }
+
     fn get_start(&self) -> (usize, usize) {
         for (y, row) in self.tiles.iter().enumerate() {
             for (x, tile) in row.iter().enumerate() {
@@ -140,6 +172,56 @@ impl Map {
             }
         }
         panic!("No start found");
+    }
+
+    fn get_start_pipe_type(&self) -> Pipe {
+        let start_loc = self.get_start();
+        let (x, y) = start_loc;
+        let tile = self.get_tile(x, y).unwrap();
+        match tile {
+            Tile::Start => {
+                let mut maybe_start: HashSet<Pipe> = HashSet::from_iter(Pipe::pipes().into_iter());
+                let north_tile = self
+                    .get_adjacent_tile(start_loc, &Direction::North)
+                    .unwrap();
+                if north_tile.can_connect(&Direction::South) {
+                    maybe_start.remove(&Pipe::SouthEast);
+                    maybe_start.remove(&Pipe::SouthWest);
+                    maybe_start.remove(&Pipe::WestEast);
+                }
+                let east_tile = self.get_adjacent_tile(start_loc, &Direction::East).unwrap();
+                if east_tile.can_connect(&Direction::West) {
+                    maybe_start.remove(&Pipe::NorthWest);
+                    maybe_start.remove(&Pipe::SouthWest);
+                    maybe_start.remove(&Pipe::NorthSouth);
+                }
+                let south_tile = self
+                    .get_adjacent_tile(start_loc, &Direction::South)
+                    .unwrap();
+                if south_tile.can_connect(&Direction::North) {
+                    maybe_start.remove(&Pipe::NorthEast);
+                    maybe_start.remove(&Pipe::NorthWest);
+                    maybe_start.remove(&Pipe::WestEast);
+                }
+                if let Some(west_tile) = self.get_adjacent_tile(start_loc, &Direction::West) {
+                    if west_tile.can_connect(&Direction::East) {
+                        maybe_start.remove(&Pipe::NorthEast);
+                        maybe_start.remove(&Pipe::SouthEast);
+                        maybe_start.remove(&Pipe::NorthSouth);
+                    }
+                };
+
+                if maybe_start.len() != 1 {
+                    panic!("Invalid start pipe");
+                }
+                maybe_start.into_iter().next().unwrap()
+            }
+            _ => panic!("Invalid start pipe"),
+        }
+    }
+
+    fn update_tile(&mut self, (x, y): (usize, usize), tile: Tile) {
+        self.tiles[y][x] = tile;
     }
 }
 
@@ -193,8 +275,80 @@ pub fn solve_task_one(#[allow(unused_variables)] input: Vec<String>) -> Result<i
     }
 }
 
+fn find_outside_points(map: &Map) -> HashSet<(usize, usize)> {
+    let mut outside = HashSet::new();
+
+    for (y, row) in map.tiles.iter().enumerate() {
+        let mut indise = false;
+        let mut facing_up = None;
+        for (x, tile) in row.iter().enumerate() {
+            match tile {
+                Tile::Pipe(Pipe::NorthSouth) => {
+                    if facing_up != None {
+                        panic!("Invalid map");
+                    }
+                    indise = !indise;
+                }
+                Tile::Pipe(Pipe::WestEast) => {
+                    if facing_up == None {
+                        panic!("Invalid map");
+                    }
+                    indise = !indise;
+                }
+                Tile::Pipe(Pipe::NorthEast) | Tile::Pipe(Pipe::SouthEast) => {
+                    if facing_up != None {
+                        panic!("Invalid map");
+                    }
+                    if let Tile::Pipe(Pipe::NorthEast) = tile {
+                        facing_up = Some(true);
+                    } else {
+                        facing_up = Some(false);
+                    }
+                }
+                Tile::Pipe(Pipe::NorthWest) | Tile::Pipe(Pipe::SouthWest) => {
+                    if facing_up == None {
+                        panic!("Invalid map");
+                    }
+                    if let Some(facing_up) = facing_up {
+                        if tile
+                            != &if facing_up {
+                                Tile::Pipe(Pipe::NorthWest)
+                            } else {
+                                Tile::Pipe(Pipe::SouthWest)
+                            }
+                        {
+                            indise = !indise;
+                        }
+                    }
+                    facing_up = None;
+                }
+                Tile::Ground => {}
+                _ => panic!("Unexpected character"),
+            }
+            if !indise {
+                outside.insert((x, y));
+            }
+        }
+    }
+
+    outside
+}
+
 pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
     let start_time = Instant::now();
+    let mut map = Map::try_from(input)?;
+    let start = map.get_start();
+    let start_type = map.get_start_pipe_type();
+    let path = get_loop(&map, vec![start]);
+    for (x, y) in path {
+        map.update_tile((x, y), Tile::Ground);
+    }
+    map.update_tile(start, Tile::Pipe(start_type));
+    let map = map;
+    let outside = find_outside_points(&map);
+
+    eprintln!("Outside: {:?}", outside);
+
     eprintln!("{:?}", Instant::now() - start_time);
     todo!()
 }
@@ -256,7 +410,7 @@ mod test {
     #[test]
     fn test_case_two_example() -> Result<()> {
         assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/example_2.txt"))?)?,
+            solve_task_two(get_file(PathBuf::from("inputs/example_8.txt"))?)?,
             0
         );
         Ok(())
