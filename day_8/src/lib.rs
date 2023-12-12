@@ -1,5 +1,4 @@
 use color_eyre::Result;
-use rayon::prelude::*;
 use std::{collections::HashMap, time::Instant};
 
 static START_NODE: &str = "AAA";
