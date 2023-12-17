@@ -15,5 +15,6 @@
         "day_12",
         "day_13",
         "day_14"
-    ]
+    ],
+    "julia.environmentPath": "/home/flyinpancake/Projects/personal/aoc23"
 }
