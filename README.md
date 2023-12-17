@@ -1,5 +1,7 @@
 # Advent of Code 2023
 
+<img alt="Coding Time Badge" src="https://wakapi.dev/api/badge/flyinpancake/interval:all_time/project:aoc23">
+
 To get the new day's puzzle, run `just new_day <day>`. This will create a new
 cargo project in the directory `day_<day>`. The puzzle input will be downloaded
 to `day_<day>/README.md`.
