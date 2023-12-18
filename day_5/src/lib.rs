@@ -205,8 +205,6 @@ pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i
             .flat_map(|s| seed_to_soils.convert_range(s))
             .collect::<Vec<_>>(),
     );
-    eprintln!("{:#?}", soils);
-    panic!();
 
     let soil_to_fertilizer = ConversionTable::from_string_vec(conversions[2][1..].into());
     let fertilizers: Vec<_> = soils
@@ -279,19 +277,17 @@ mod test {
 
     #[test]
     fn test_case_two_example() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/example_1.txt"))?)?,
-            46
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_1.txt"))?;
+        assert_eq!(solve_task_two(file)?, 46);
         Ok(())
     }
 
     #[test]
     fn test_case_two_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            148041808
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_two(file)?, 148041808);
         Ok(())
     }
 

@@ -121,12 +121,12 @@ mod test {
         assert_eq!(solve_task_one(file)?, 13);
         Ok(())
     }
+
     #[test]
     fn test_case_one_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_one(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            24848
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_one(file)?, 24848);
         Ok(())
     }
 
@@ -140,10 +140,9 @@ mod test {
 
     #[test]
     fn test_case_two_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            7258152
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_two(file)?, 7258152);
         Ok(())
     }
 }

@@ -95,19 +95,17 @@ mod test {
 
     #[test]
     fn test_case_two_example() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/example_2.txt"))?)?,
-            71503
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_2.txt"))?;
+        assert_eq!(solve_task_two(file)?, 71503);
         Ok(())
     }
 
     #[test]
     fn test_case_two_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            20537782
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_two(file)?, 20537782);
         Ok(())
     }
 }

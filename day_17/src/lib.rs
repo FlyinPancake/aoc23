@@ -3,7 +3,7 @@ use std::{
     time::Instant,
 };
 
-use color_eyre::{owo_colors::OwoColorize, Result};
+use color_eyre::Result;
 use rayon::prelude::*;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
@@ -246,26 +246,24 @@ mod test {
 
         assert_eq!(
             solve_task_one(get_file(cargo_manifest_dir.join("inputs/full.txt"))?)?,
-            0
+            785
         );
         Ok(())
     }
 
     #[test]
     fn test_case_two_example() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/example_1.txt"))?)?,
-            94
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_1.txt"))?;
+        assert_eq!(solve_task_two(file)?, 94);
         Ok(())
     }
 
     #[test]
     fn test_case_two_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            0
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_two(file)?, 922);
         Ok(())
     }
 }

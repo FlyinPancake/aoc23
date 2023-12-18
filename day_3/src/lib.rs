@@ -296,36 +296,32 @@ mod test {
 
     #[test]
     fn test_case_one_example() -> Result<()> {
-        assert_eq!(
-            solve_task_one(get_file(PathBuf::from("inputs/example_1.txt"))?)?,
-            4361
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_1.txt"))?;
+        assert_eq!(solve_task_one(file)?, 4361);
         Ok(())
     }
     #[test]
     fn test_case_one_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_one(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            527364
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_one(file)?, 527364);
         Ok(())
     }
 
     #[test]
     fn test_case_two_example() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/example_2.txt"))?)?,
-            467835
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_2.txt"))?;
+        assert_eq!(solve_task_two(file)?, 467835);
         Ok(())
     }
 
     #[test]
     fn test_case_two_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            0
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_two(file)?, 79026871);
         Ok(())
     }
 }

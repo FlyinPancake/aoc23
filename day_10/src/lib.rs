@@ -239,9 +239,16 @@ fn get_loop(map: &Map, start_pos: (usize, usize)) -> Vec<(usize, usize)> {
         let tile = map.get_tile(x, y).unwrap();
         for direction in tile.get_directions() {
             let other_pos = match direction {
-                Direction::North => (x, y - 1),
+                Direction::North => (x, if y > 0 { y - 1 } else { continue }),
                 Direction::South => (x, y + 1),
-                Direction::West => (x - 1, y),
+                Direction::West => (
+                    if x > 0 {
+                        x - 1
+                    } else {
+                        continue;
+                    },
+                    y,
+                ),
                 Direction::East => (x + 1, y),
             };
             if visited.contains(&other_pos) {
@@ -406,26 +413,24 @@ mod test {
 
         assert_eq!(
             solve_task_one(get_file(cargo_manifest_dir.join("inputs/full.txt"))?)?,
-            0
+            6800
         );
         Ok(())
     }
 
     #[test]
     fn test_case_two_example() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/example_8.txt"))?)?,
-            0
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_8.txt"))?;
+        assert_eq!(solve_task_two(file)?, 1);
         Ok(())
     }
 
     #[test]
     fn test_case_two_example_2() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/example_5.txt"))?)?,
-            0
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_5.txt"))?;
+        assert_eq!(solve_task_two(file)?, 1);
         Ok(())
     }
 
@@ -440,10 +445,9 @@ mod test {
 
     #[test]
     fn test_case_two_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            0
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_two(file)?, 483);
         Ok(())
     }
 

@@ -74,9 +74,9 @@ pub fn solve_task_one(input: Vec<String>) -> Result<i32> {
         })
         .collect::<Vec<_>>();
     // eprintln!("{:?}", sensor_value_histories);
-    let sol = sensor_value_histories.into_iter().map(get_next_value).sum();
+    let sol: i32 = sensor_value_histories.into_iter().map(get_next_value).sum();
     eprintln!("{:?}", Instant::now() - start_time);
-    Ok(sol)
+    Ok(-sol)
 }
 
 pub fn solve_task_two(input: Vec<String>) -> Result<i32> {
@@ -127,29 +127,24 @@ mod test {
     #[test]
     fn test_case_one_solve() -> Result<()> {
         let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-
-        assert_eq!(
-            solve_task_one(get_file(cargo_manifest_dir.join("inputs/full.txt"))?)?,
-            0
-        );
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_one(file)?, 1938731307);
         Ok(())
     }
 
     #[test]
     fn test_case_two_example() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/example_1.txt"))?)?,
-            2
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/example_1.txt"))?;
+        assert_eq!(solve_task_two(file)?, 2);
         Ok(())
     }
 
     #[test]
     fn test_case_two_solve() -> Result<()> {
-        assert_eq!(
-            solve_task_two(get_file(PathBuf::from("inputs/full.txt"))?)?,
-            0
-        );
+        let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
+        assert_eq!(solve_task_two(file)?, 948);
         Ok(())
     }
 }
