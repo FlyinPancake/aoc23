@@ -63,8 +63,6 @@ The Elves are concerned the lagoon won't be large enough; if they follow their d
 
 Your puzzle answer was `50603`.
 
-The first half of this puzzle is complete! It provides one gold star: \*
-
 \--- Part Two ---
 ----------
 
@@ -95,8 +93,12 @@ Digging out this loop and its interior produces a lagoon that can hold an impres
 
 Convert the hexadecimal color codes into the correct instructions; if the Elves follow this new dig plan, *how many cubic meters of lava could the lagoon hold?*
 
-Answer:
+Your puzzle answer was `96556251590677`.
 
-Although it hasn't changed, you can still [get your puzzle input](18/input).
+Both parts of this puzzle are complete! They provide two gold stars: \*\*
 
-You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+Part+One+of+%22Lavaduct+Lagoon%22+%2D+Day+18+%2D+Advent+of+Code+2023&url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F18&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
+At this point, you should [return to your Advent calendar](/2023) and try another puzzle.
+
+If you still want to see it, you can [get your puzzle input](18/input).
+
+You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+%22Lavaduct+Lagoon%22+%2D+Day+18+%2D+Advent+of+Code+2023&url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F18&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
