@@ -443,6 +443,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "day_16"
+version = "0.1.0"
+dependencies = [
+ "color-eyre",
+ "common",
+ "rayon",
+]
+
+[[package]]
 name = "day_2"
 version = "0.1.0"
 dependencies = [
