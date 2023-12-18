@@ -1,10 +1,23 @@
-[dependencies.color-eyre]
-workspace = true
-
-[dependencies.rayon]
-workspace = true
-
 [package]
-edition = "2021"
 name = "day_1"
 version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+color-eyre.workspace = true
+rayon.workspace = true
+common.workspace = true
+
+[lib]
+name = "solution"
+path = "src/lib.rs"
+
+[[bin]]
+name = "task_1"
+path = "src/bin/task_1.rs"
+
+[[bin]]
+name = "task_2"
+path = "src/bin/task_2.rs"
