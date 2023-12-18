@@ -6,6 +6,9 @@ path = "src/bin/task_1.rs"
 name = "task_2"
 path = "src/bin/task_2.rs"
 
+[dependencies]
+csscolorparser = "0.6.2"
+
 [dependencies.color-eyre]
 workspace = true
 
