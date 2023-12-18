@@ -1,6 +1,6 @@
 # Advent of Code 2023
 
-<img alt="Coding Time Badge" src="https://wakapi.dev/api/badge/flyinpancake/interval:all_time/project:aoc23">
+<img src="https://img.shields.io/endpoint?url=https://wakapi.dev/api/compat/shields/v1/flyinpancake/interval:all_time/project:aoc23&label=Total coding">
 
 To get the new day's puzzle, run `just new_day <day>`. This will create a new
 cargo project in the directory `day_<day>`. The puzzle input will be downloaded
