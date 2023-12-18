@@ -69,6 +69,34 @@ fn main() -> Result<()> {
     Ok(())
 }
 
+static CHRISTMAS_EMOJIS: [&str; 25] = [
+    "🎄",
+    "🎅",
+    "🤶",
+    "🦌",
+    "🛷",
+    "🎁",
+    "🔔",
+    "🕯️",
+    "🧦",
+    "🎉",
+    "🍪",
+    "🥛",
+    "🍬",
+    "🎶",
+    "⛄",
+    "❄️",
+    "🌟",
+    "🌲",
+    "🕰️",
+    "🍾",
+    "🎂",
+    "🤗",
+    "🎊",
+    "🧑‍🎄",
+    "🕊️",
+];
+
 fn vscode_create_tasks(vscode_dir: &PathBuf, args: Args) -> Result<(), color_eyre::eyre::Error> {
     let vscode_launch_path = vscode_dir.join("launch.json");
     let vscode_launch = fs::read_to_string(&vscode_launch_path)?;
@@ -91,7 +119,7 @@ fn vscode_create_tasks(vscode_dir: &PathBuf, args: Args) -> Result<(), color_eyr
                 let day_lib_config = serde_json::json!({
                     "type": "lldb",
                     "request": "launch",
-                    "name": format!("Debug unit tests in day_{}", &args.day),
+                    "name": format!("{}  Debug unit tests in day_{}",CHRISTMAS_EMOJIS[args.day as usize], &args.day),
                     "cargo": {
                         "args": [
                             "test",
@@ -101,7 +129,7 @@ fn vscode_create_tasks(vscode_dir: &PathBuf, args: Args) -> Result<(), color_eyr
                             "--lib",
                         ],
                         "filter": {
-                            "name": format!("day_{}", &args.day),
+                            "name": "solution",
                             "kind": "lib"
                         }
                     },

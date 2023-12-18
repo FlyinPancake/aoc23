@@ -1,6 +1,5 @@
 # run tests for the day:
 
-leaderboard_id := `op read "op://Personal/cqib5epgrz55ypzgh36nw5apne/leaderboard id"`
 
 aoc-cli *args:
     #!/bin/fish
@@ -9,7 +8,9 @@ aoc-cli *args:
 
 
 pl:
-    just aoc-cli private-leaderboard {{leaderboard_id}}
+    #!/bin/bash
+    leaderboard_id=$(op read "op://Personal/cqib5epgrz55ypzgh36nw5apne/leaderboard id")
+    just aoc-cli private-leaderboard $leaderboard_id
 
 
 new_day day:
@@ -30,6 +31,9 @@ vscode_setup day:
     export RUST_BACKTRACE=1
     op run -- cargo run -p common --bin create_day -- --day {{day}} vscode
 
+code day:
+    code --goto day_{{day}}/src/lib.rs
+    code --goto day_{{day}}/README.md
 
 test day phase="":
     cargo test -p day_{{day}} {{phase}} --lib
