@@ -1,9 +1,14 @@
-use std::{collections::HashSet, time::Instant};
+use std::{
+    collections::{HashSet, VecDeque},
+    fmt::Debug,
+    time::Instant,
+};
 
 use color_eyre::{
     eyre::{anyhow, Report},
     Result,
 };
+
 #[derive(Debug, Hash, PartialEq, Eq)]
 enum Pipe {
     NorthSouth,
@@ -115,7 +120,6 @@ impl Tile {
         }
     }
 }
-
 #[derive(Debug)]
 struct Map {
     tiles: Vec<Vec<Tile>>,
@@ -225,47 +229,41 @@ impl Map {
     }
 }
 
-fn get_loop(map: &Map, path: Vec<(usize, usize)>) -> Vec<(usize, usize)> {
-    let (x, y) = path[path.len() - 1];
-    let tile = map.get_tile(x, y).unwrap();
-    let mut paths = vec![path.clone()];
-    let directions = tile.get_directions();
-    for direction in directions {
-        let (x, y) = match direction {
-            Direction::North => {
-                if y == 0 {
-                    continue;
-                }
-                (x, y - 1)
-            }
-            Direction::South => (x, y + 1),
-            Direction::West => {
-                if x == 0 {
-                    continue;
-                }
-                (x - 1, y)
-            }
-            Direction::East => (x + 1, y),
-        };
+fn get_loop(map: &Map, start_pos: (usize, usize)) -> Vec<(usize, usize)> {
+    let mut queue = VecDeque::from(vec![start_pos]);
+    let mut visited = HashSet::new();
+    visited.insert(start_pos);
+
+    while let Some(pos) = queue.pop_front() {
+        let (x, y) = pos;
         let tile = map.get_tile(x, y).unwrap();
-        if let Tile::Start = tile {
-            continue;
-        }
-        if tile.can_connect(&direction.get_opposite()) && !path.contains(&(x, y)) {
-            let mut new_path = path.clone();
-            new_path.push((x, y));
-            paths.push(get_loop(map, new_path));
+        for direction in tile.get_directions() {
+            let other_pos = match direction {
+                Direction::North => (x, y - 1),
+                Direction::South => (x, y + 1),
+                Direction::West => (x - 1, y),
+                Direction::East => (x + 1, y),
+            };
+            if visited.contains(&other_pos) {
+                continue;
+            }
+            if let Some(other_tile) = map.get_adjacent_tile(pos, &direction) {
+                if other_tile.can_connect(&direction.get_opposite()) {
+                    visited.insert(other_pos);
+                    queue.push_back(other_pos);
+                }
+            }
         }
     }
-    paths.sort_by(|a, b| b.len().cmp(&a.len()));
-    paths[0].clone()
+
+    visited.into_iter().collect()
 }
 
 pub fn solve_task_one(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
     let start_time = Instant::now();
     let map = Map::try_from(input)?;
     let start = map.get_start();
-    let longest_path = get_loop(&map, vec![start]).len();
+    let longest_path = get_loop(&map, start).len();
     eprintln!("Longest path: {}", longest_path);
 
     eprintln!("{:?}", Instant::now() - start_time);
@@ -285,19 +283,18 @@ fn find_outside_points(map: &Map) -> HashSet<(usize, usize)> {
             match tile {
                 Tile::Pipe(Pipe::NorthSouth) => {
                     if facing_up != None {
-                        panic!("Invalid map");
+                        panic!("Invalid map 1");
                     }
                     indise = !indise;
                 }
                 Tile::Pipe(Pipe::WestEast) => {
                     if facing_up == None {
-                        panic!("Invalid map");
+                        panic!("Invalid map 2");
                     }
-                    indise = !indise;
                 }
                 Tile::Pipe(Pipe::NorthEast) | Tile::Pipe(Pipe::SouthEast) => {
                     if facing_up != None {
-                        panic!("Invalid map");
+                        panic!("Invalid map 3");
                     }
                     if let Tile::Pipe(Pipe::NorthEast) = tile {
                         facing_up = Some(true);
@@ -307,7 +304,7 @@ fn find_outside_points(map: &Map) -> HashSet<(usize, usize)> {
                 }
                 Tile::Pipe(Pipe::NorthWest) | Tile::Pipe(Pipe::SouthWest) => {
                     if facing_up == None {
-                        panic!("Invalid map");
+                        panic!("Invalid map 4");
                     }
                     if let Some(facing_up) = facing_up {
                         if tile
@@ -339,18 +336,25 @@ pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i
     let mut map = Map::try_from(input)?;
     let start = map.get_start();
     let start_type = map.get_start_pipe_type();
-    let path = get_loop(&map, vec![start]);
-    for (x, y) in path {
-        map.update_tile((x, y), Tile::Ground);
+    let path = get_loop(&map, start);
+    for y in 0..map.tiles.len() {
+        for x in 0..map.tiles[y].len() {
+            if !path.contains(&(x, y)) {
+                map.update_tile((x, y), Tile::Ground);
+            }
+        }
     }
     map.update_tile(start, Tile::Pipe(start_type));
     let map = map;
     let outside = find_outside_points(&map);
 
-    eprintln!("Outside: {:?}", outside);
+    let map_size: i32 = (map.tiles.len() * map.tiles[0].len()).try_into().unwrap();
+    let path = HashSet::from_iter(path.iter().cloned());
+
+    let sol = map_size - outside.union(&path).count() as i32;
 
     eprintln!("{:?}", Instant::now() - start_time);
-    todo!()
+    Ok(sol as i32)
 }
 
 #[cfg(test)]
@@ -412,6 +416,24 @@ mod test {
         assert_eq!(
             solve_task_two(get_file(PathBuf::from("inputs/example_8.txt"))?)?,
             0
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_case_two_example_2() -> Result<()> {
+        assert_eq!(
+            solve_task_two(get_file(PathBuf::from("inputs/example_5.txt"))?)?,
+            0
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_case_two_example_3() -> Result<()> {
+        assert_eq!(
+            solve_task_two(get_file(PathBuf::from("inputs/example_10.txt"))?)?,
+            4
         );
         Ok(())
     }

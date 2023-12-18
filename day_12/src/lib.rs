@@ -1,4 +1,4 @@
-use std::{collections::HashMap, str::FromStr, sync::Arc, time::Instant};
+use std::{collections::HashMap, str::FromStr, time::Instant};
 
 use color_eyre::{eyre::anyhow, Result};
 
@@ -176,7 +176,7 @@ mod test {
         Ok(lines?)
     }
 
-    use crate::{solve_task_one, solve_task_two, HotSpringRow};
+    use crate::{solve_task_one, solve_task_two};
 
     #[test]
     fn test_case_one_example() -> Result<()> {

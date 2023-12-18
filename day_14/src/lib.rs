@@ -60,6 +60,7 @@ impl Map {
             Direction::Right => todo!(),
         }
     }
+    #[allow(dead_code)]
     fn print(&self) {
         for row in &self.tiles {
             for tile in row {
@@ -169,13 +170,6 @@ impl Map {
         .for_each(|direction| {
             self.roll(*direction);
         });
-    }
-
-    fn count(&self, tile: Tile) -> usize {
-        self.tiles
-            .iter()
-            .map(|row| row.iter().filter(|t| **t == tile).count())
-            .sum()
     }
 }
 

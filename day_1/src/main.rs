@@ -1,6 +1,7 @@
 use color_eyre::{eyre::anyhow, Result};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
+#[allow(dead_code)]
 fn solve_task_one(input: Vec<String>) -> Result<i32> {
     let lines = input;
 
@@ -20,6 +21,7 @@ fn solve_task_one(input: Vec<String>) -> Result<i32> {
     i32::try_from(sol).map_err(|_| anyhow!("Number doesn't fit!"))
 }
 
+#[allow(dead_code)]
 fn solve_task_two(input: Vec<String>) -> Result<i32> {
     let lines = input
         .into_par_iter()

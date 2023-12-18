@@ -4,6 +4,7 @@ use color_eyre::{eyre::anyhow, Result};
 
 #[derive(Debug)]
 struct ScratchCard {
+    #[allow(dead_code)]
     id: i32,
     winning_numbers: HashSet<i32>,
     own_numbers: HashSet<i32>,
