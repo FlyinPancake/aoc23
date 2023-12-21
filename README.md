@@ -1,7 +1,7 @@
 # Advent of Code 2023
 <!-- markdownlint-disable MD033-->
 <img src="https://img.shields.io/endpoint?url=https://wakapi.dev/api/compat/shields/v1/flyinpancake/interval:all_time/project:aoc23&label=Totalcoding" alt="Total coding time">
-<img src="https://img.shields.io/badge/Progress-18%2F25-red" alt="Progress">
+<img src="https://img.shields.io/badge/Progress-20%2F25-red" alt="Progress">
 <!-- markdownlint-enable MD033-->
 
 To get the new day's puzzle, run `just new_day <day>`. This will create a new
