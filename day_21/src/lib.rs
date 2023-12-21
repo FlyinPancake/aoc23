@@ -89,14 +89,12 @@ pub fn solve_task_one(input: Vec<String>, steps: i32) -> Result<i32> {
         .collect::<VecDeque<_>>();
     let mut visited = HashSet::new();
     visited.insert(map.start);
-    let mut current_step = HashSet::new();
+    // let mut current_step = HashSet::new();
     while let Some((x, y, cur_steps)) = queue.pop_front() {
         if cur_steps > steps {
             break;
         }
-        if current_step.insert(cur_steps) {
-            eprintln!("Step: {}", cur_steps);
-        }
+
         if visited.contains(&(x, y)) {
             continue;
         }
@@ -116,8 +114,68 @@ pub fn solve_task_one(input: Vec<String>, steps: i32) -> Result<i32> {
     Ok(visited.len() as i32)
 }
 
-pub fn solve_task_two(#[allow(unused_variables)] input: Vec<String>) -> Result<i32> {
+struct InfiniteMap {
+    base_tiles: Vec<Vec<MapTile>>,
+    start: (i32, i32),
+}
+
+impl InfiniteMap {
+    fn from_map(map: Map) -> Self {
+        let base_tiles = map.tiles;
+        let start = (map.start.0 as i32, map.start.1 as i32);
+        let new_map = Self { base_tiles, start };
+        new_map
+    }
+
+    fn get_tile(&self, x: i32, y: i32) -> MapTile {
+        let x = (x % self.base_tiles[0].len() as i32) as usize;
+        let y = (y % self.base_tiles.len() as i32) as usize;
+        self.base_tiles[y][x]
+    }
+    fn get_neighbors(&self, x: i32, y: i32) -> VecDeque<(i32, i32)> {
+        let mut neighbors = VecDeque::new();
+        if !matches!(self.get_tile(x - 1, y), MapTile::Rock) {
+            neighbors.push_back((x - 1, y));
+        }
+        if !matches!(self.get_tile(x, y - 1), MapTile::Rock) {
+            neighbors.push_back((x, y - 1));
+        }
+        if !matches!(self.get_tile(x + 1, y), MapTile::Rock) {
+            neighbors.push_back((x + 1, y));
+        }
+        if !matches!(self.get_tile(x, y + 1), MapTile::Rock) {
+            neighbors.push_back((x, y + 1));
+        }
+
+        neighbors
+    }
+}
+
+pub fn solve_task_two(input: Vec<String>, steps: i32) -> Result<i32> {
     let start_time = Instant::now();
+    let map = Map::from_lines(input);
+    let infinite_map = InfiniteMap::from_map(map);
+    let start = infinite_map.start;
+    let mut queue = VecDeque::new();
+    queue.push_back((start.0, start.1, 0));
+    let mut visited = HashSet::new();
+    while let Some((x, y, step)) = queue.pop_front() {
+        if step > steps {
+            break;
+        }
+        if visited.contains(&(x, y)) {
+            continue;
+        }
+        if step % 2 == 0 {
+            visited.insert((x, y));
+        }
+        queue.extend(
+            infinite_map
+                .get_neighbors(x, y)
+                .into_iter()
+                .map(|(x, y)| (x, y, step + 1)),
+        );
+    }
     eprintln!("{:?}", Instant::now() - start_time);
     todo!()
 }
@@ -152,15 +210,18 @@ mod test {
     fn test_case_one_solve() -> Result<()> {
         let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
-        assert_eq!(solve_task_one(file, 64)?, 0);
+        assert_eq!(solve_task_one(file, 64)?, 3764);
         Ok(())
     }
-    #[ignore = "Not implemented yet"]
+
     #[test]
     fn test_case_two_example() -> Result<()> {
         let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         let file = get_file(cargo_manifest_dir.join("inputs/example_1.txt"))?;
-        assert_eq!(solve_task_two(file)?, 0);
+        let sols = [(6, 16), (10, 50), (50, 1594), (100, 6536)];
+        for (steps, sol) in sols {
+            assert_eq!(solve_task_one(file.clone(), steps)?, sol);
+        }
         Ok(())
     }
     #[ignore = "Not implemented yet"]
@@ -168,7 +229,7 @@ mod test {
     fn test_case_two_solve() -> Result<()> {
         let cargo_manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         let file = get_file(cargo_manifest_dir.join("inputs/full.txt"))?;
-        assert_eq!(solve_task_two(file)?, 0);
+        assert_eq!(solve_task_two(file, 26501365)?, 0);
         Ok(())
     }
 }
